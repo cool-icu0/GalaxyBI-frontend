@@ -1,6 +1,7 @@
-import { Footer } from '@/components';
+import Footer from '@/components/Footer';
 import { login } from '@/services/ant-design-pro/api';
 import { getFakeCaptcha } from '@/services/ant-design-pro/login';
+import { listChartByPageUsingPost } from '@/services/GalaxyBI/chartController';
 import {
   AlipayCircleOutlined,
   LockOutlined,
@@ -18,10 +19,9 @@ import {
 import { Helmet, history, useModel } from '@umijs/max';
 import { Alert, message, Tabs } from 'antd';
 import { createStyles } from 'antd-style';
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { flushSync } from 'react-dom';
 import Settings from '../../../../config/defaultSettings';
-import {listChartByPageUsingPost} from "@/services/GalaxyBI/chartController";
 const useStyles = createStyles(({ token }) => {
   return {
     action: {
@@ -90,11 +90,11 @@ const Login: React.FC = () => {
   const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
   const { styles } = useStyles();
-  useEffect(()=>{
-    listChartByPageUsingPost({}).then(res => {
-      console.error('res',res)
-    })
-  })
+  useEffect(() => {
+    listChartByPageUsingPost({}).then((res) => {
+      console.error('res', res);
+    });
+  });
 
   const fetchUserInfo = async () => {
     const userInfo = await initialState?.fetchUserInfo?.();
@@ -152,8 +152,8 @@ const Login: React.FC = () => {
             maxWidth: '75vw',
           }}
           logo={<img alt="logo" src="/logo.svg" />}
-          title="Ant Design"
-          subTitle={'Ant Design 是西湖区最具影响力的 Web 设计规范'}
+          title="银河智能BI"
+          subTitle={'银河智能BI是一款智能化数据分析的项目'}
           initialValues={{
             autoLogin: true,
           }}
