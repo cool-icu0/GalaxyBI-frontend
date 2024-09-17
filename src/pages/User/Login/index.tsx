@@ -16,12 +16,13 @@ import {
   ProFormCheckbox,
   ProFormText,
 } from '@ant-design/pro-components';
-import { Helmet, history, useModel } from '@umijs/max';
+import { Helmet, history, Link, useModel } from '@umijs/max';
 import { Alert, message, Tabs } from 'antd';
 import { createStyles } from 'antd-style';
 import React, { useEffect, useState } from 'react';
 import { flushSync } from 'react-dom';
 import Settings from '../../../../config/defaultSettings';
+
 const useStyles = createStyles(({ token }) => {
   return {
     action: {
@@ -66,10 +67,6 @@ const ActionIcons = () => {
       <WeiboCircleOutlined key="WeiboCircleOutlined" className={styles.action} />
     </>
   );
-};
-const Lang = () => {
-  const { styles } = useStyles();
-  return;
 };
 const LoginMessage: React.FC<{
   content: string;
@@ -139,7 +136,6 @@ const Login: React.FC = () => {
           {'登录'}- {Settings.title}
         </title>
       </Helmet>
-      <Lang />
       <div
         style={{
           flex: '1',
@@ -189,7 +185,7 @@ const Login: React.FC = () => {
                   size: 'large',
                   prefix: <UserOutlined />,
                 }}
-                placeholder={'用户名: admin or user'}
+                placeholder={'用户名'}
                 rules={[
                   {
                     required: true,
@@ -203,7 +199,7 @@ const Login: React.FC = () => {
                   size: 'large',
                   prefix: <LockOutlined />,
                 }}
-                placeholder={'密码: ant.design'}
+                placeholder={'密码'}
                 rules={[
                   {
                     required: true,
@@ -271,22 +267,39 @@ const Login: React.FC = () => {
           )}
           <div
             style={{
-              marginBottom: 24,
+              marginBottom: 5,
             }}
           >
             <ProFormCheckbox noStyle name="autoLogin">
               自动登录
             </ProFormCheckbox>
+          </div>
+
+          <div
+            style={{
+              marginBottom: 15,
+            }}
+          >
+            <a
+              style={{
+                float: 'left',
+              }}
+            >
+              <Link to="/user/register"> 注册账号</Link>
+            </a>
             <a
               style={{
                 float: 'right',
               }}
             >
+              {/*todo 修改这个跳转*/}
               忘记密码 ?
             </a>
           </div>
+          <br />
         </LoginForm>
       </div>
+
       <Footer />
     </div>
   );
