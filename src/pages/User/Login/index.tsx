@@ -1,7 +1,7 @@
 import Footer from '@/components/Footer';
-import { login } from '@/services/ant-design-pro/api';
 import { getFakeCaptcha } from '@/services/ant-design-pro/login';
 import { listChartByPageUsingPost } from '@/services/GalaxyBI/chartController';
+import { getLoginUserUsingGet, userLoginUsingPost } from '@/services/GalaxyBI/userController';
 import {
   AlipayCircleOutlined,
   LockOutlined,
@@ -94,7 +94,7 @@ const Login: React.FC = () => {
   });
 
   const fetchUserInfo = async () => {
-    const userInfo = await initialState?.fetchUserInfo?.();
+    const userInfo = await getLoginUserUsingGet();
     if (userInfo) {
       flushSync(() => {
         setInitialState((s) => ({
@@ -104,14 +104,11 @@ const Login: React.FC = () => {
       });
     }
   };
-  const handleSubmit = async (values: API.LoginParams) => {
+  const handleSubmit = async (values: API.UserLoginRequest) => {
     try {
       // 登录
-      const msg = await login({
-        ...values,
-        type,
-      });
-      if (msg.status === 'ok') {
+      const res = await userLoginUsingPost(values);
+      if (res.code === 0) {
         const defaultLoginSuccessMessage = '登录成功！';
         message.success(defaultLoginSuccessMessage);
         await fetchUserInfo();
@@ -119,9 +116,8 @@ const Login: React.FC = () => {
         history.push(urlParams.get('redirect') || '/');
         return;
       }
-      console.log(msg);
+      console.log(res.message);
       // 如果失败去设置用户错误信息
-      setUserLoginState(msg);
     } catch (error) {
       const defaultLoginFailureMessage = '登录失败，请重试！';
       console.log(error);
@@ -155,7 +151,7 @@ const Login: React.FC = () => {
           }}
           actions={['其他登录方式 :', <ActionIcons key="icons" />]}
           onFinish={async (values) => {
-            await handleSubmit(values as API.LoginParams);
+            await handleSubmit(values as API.UserLoginRequest);
           }}
         >
           <Tabs
@@ -173,19 +169,15 @@ const Login: React.FC = () => {
               },
             ]}
           />
-
-          {status === 'error' && loginType === 'account' && (
-            <LoginMessage content={'错误的用户名和密码(admin/ant.design)'} />
-          )}
           {type === 'account' && (
             <>
               <ProFormText
-                name="username"
+                name="userAccount"
                 fieldProps={{
                   size: 'large',
                   prefix: <UserOutlined />,
                 }}
-                placeholder={'用户名'}
+                placeholder={'请输入用户名'}
                 rules={[
                   {
                     required: true,
@@ -194,12 +186,12 @@ const Login: React.FC = () => {
                 ]}
               />
               <ProFormText.Password
-                name="password"
+                name="userPassword"
                 fieldProps={{
                   size: 'large',
                   prefix: <LockOutlined />,
                 }}
-                placeholder={'密码'}
+                placeholder={'请输入密码'}
                 rules={[
                   {
                     required: true,
