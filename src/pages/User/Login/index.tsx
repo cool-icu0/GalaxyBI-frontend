@@ -115,8 +115,10 @@ const Login: React.FC = () => {
         const urlParams = new URL(window.location.href).searchParams;
         history.push(urlParams.get('redirect') || '/');
         return;
+      } else {
+        message.error(res.message);
       }
-      console.log(res.message);
+
       // 如果失败去设置用户错误信息
     } catch (error) {
       const defaultLoginFailureMessage = '登录失败，请重试！';
