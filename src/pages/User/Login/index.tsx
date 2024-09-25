@@ -97,6 +97,7 @@ const Login: React.FC = () => {
     const userInfo = await getLoginUserUsingGet();
     if (userInfo) {
       flushSync(() => {
+        // @ts-ignore
         setInitialState((s) => ({
           ...s,
           currentUser: userInfo,
