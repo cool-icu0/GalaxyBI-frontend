@@ -1,6 +1,19 @@
 import { genChartByAiUsingPost } from '@/services/GalaxyBI/chartController';
 import { UploadOutlined } from '@ant-design/icons';
-import { Button, Card, Col, Divider, Form, Input, Row, Select, Space, Spin, Upload } from 'antd';
+import {
+  Button,
+  Card,
+  Col,
+  Divider,
+  Form,
+  Input,
+  message,
+  Row,
+  Select,
+  Space,
+  Spin,
+  Upload,
+} from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import ReactECharts from 'echarts-for-react';
 import React, { useState } from 'react';
@@ -36,10 +49,10 @@ const AddChart: React.FC = () => {
       const res = await genChartByAiUsingPost(params, {}, values.file.file.originFileObj);
       console.log('第0个数据项', res.data?.genChart);
       if (!res.data) {
-        // message.error('分析失败');
+        message.error('分析失败');
         console.log('分析失败原因', res.data);
       } else {
-        // message.success('分析成功');
+        message.success('分析成功');
         const chartOption = JSON.parse(res.data.genChart ?? '');
         console.log('第一个数据：', res.data.genChart, '第二个数据：', chartOption);
         if (!chartOption) {
@@ -50,7 +63,7 @@ const AddChart: React.FC = () => {
         }
       }
     } catch (e: any) {
-      // message.error('分析失败', e.message);
+      message.error('分析失败', e.message);
     }
     setSubmitting(false);
   };
@@ -75,7 +88,7 @@ const AddChart: React.FC = () => {
               >
                 <TextArea placeholder="请输入你的分析需求，比如：分析网站用户的增长情况" />
               </Form.Item>
-              <Form.Item name="name" label="图表名称">
+              <Form.Item name="chartName" label="图表名称">
                 <Input placeholder="请输入图表名称" />
               </Form.Item>
               <Form.Item name="chartType" label="图表类型">
