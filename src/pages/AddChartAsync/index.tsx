@@ -1,4 +1,4 @@
-import { genChartByAiAsyncUsingPost } from '@/services/GalaxyBI/chartController';
+import { genChartByAiAsyncMqUsingPost } from '@/services/GalaxyBI/chartController';
 import { UploadOutlined } from '@ant-design/icons';
 import { Button, Card, Form, Input, message, Select, Space, Upload } from 'antd';
 import { useForm } from 'antd/es/form/Form';
@@ -29,7 +29,7 @@ const AddChartAsync: React.FC = () => {
       file: undefined,
     };
     try {
-      const res = await genChartByAiAsyncUsingPost(params, {}, values.file.file.originFileObj);
+      const res = await genChartByAiAsyncMqUsingPost(params, {}, values.file.file.originFileObj);
       if (!res?.data) {
         message.error('分析失败');
       } else {
@@ -69,7 +69,7 @@ const AddChartAsync: React.FC = () => {
               options={[
                 { value: '折线图', label: '折线图' },
                 { value: '柱状图', label: '柱状图' },
-                { value: '堆叠图', label: '堆叠图' },
+                // { value: '堆叠图', label: '堆叠图' },
                 { value: '饼图', label: '饼图' },
                 { value: '雷达图', label: '雷达图' },
               ]}
